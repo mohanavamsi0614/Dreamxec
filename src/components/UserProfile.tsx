@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { StarDecoration } from './icons/StarDecoration';
 import { Header } from '../sections/Header';
 import type { User } from '../types';
-import imageIcon from '../assets/image.png';
-import image1Icon from '../assets/image1.png';
-import imageCopyIcon from '../assets/imagecopy.png';
-
-// Icons
 const BankIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
