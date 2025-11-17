@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  DONOR
+  ADMIN
+}
+
+enum ProjectStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+enum BankAccountStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  REJECTED
+}
+
+// -----------------------------
+// USER MODEL
+// -----------------------------
+model User {
+  id                      String    @id @default(auto()) @map("_id") @db.ObjectId
+  email                   String    @unique
+  password                String?
+  name                    String?
+  role                    Role      @default(USER)
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  // Relations
+  userProjects            UserProject[]
+  bankAccounts            BankAccount[]
+  withdrawals             Withdrawal[]
+}
+
+// -----------------------------
+// DONOR MODEL
+// -----------------------------
+model Donor {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  email            String   @unique
+  password         String?
+  organizationName String?
+  verified         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  donations        Donation[]
+  donorProjects    DonorProject[]
+}
+
+// -----------------------------
+// USER PROJECT MODEL
+// (projects created by USERS to receive donations)
+// -----------------------------
+model UserProject {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  companyName    String?
+  skillsRequired String[]
+  timeline       String?
+  goalAmount     Float
+  amountRaised   Float         @default(0)
+  imageUrl       String?
+  status         ProjectStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // Relation to user (creator)
+  userId         String        @db.ObjectId
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Bank account for payout
+  bankAccountId  String?       @db.ObjectId
+  bankAccount    BankAccount?  @relation(fields: [bankAccountId], references: [id])
+
+  // Donations from donors
+  donations      Donation[]
+  withdrawals    Withdrawal[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+// -----------------------------
+// DONOR PROJECT MODEL
+// (projects created by DONORS - funding initiatives or sponsorships)
+// -----------------------------
+model DonorProject {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  title          String
+  description    String
+  organization   String?
+  skillsRequired String[]
+  timeline       String?
+  totalBudget    Float
+  allocatedFunds Float         @default(0)
+  imageUrl       String?
+  status         ProjectStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  // Relation to donor (creator)
+  donorId        String        @db.ObjectId
+  donor          Donor         @relation(fields: [donorId], references: [id], onDelete: Cascade)
+
+  @@index([donorId])
+  @@index([status])
+}
+
+// -----------------------------
+// DONATION MODEL
+// -----------------------------
+model Donation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount        Float
+  message       String?
+  anonymous     Boolean  @default(false)
+  paymentStatus String   @default("pending")
+  createdAt     DateTime @default(now())
+
+  // Relation to Donor
+  donorId       String   @db.ObjectId
+  donor         Donor    @relation(fields: [donorId], references: [id], onDelete: Cascade)
+
+  // Relation to User Project (the project being donated to)
+  userProjectId String   @db.ObjectId
+  userProject   UserProject @relation(fields: [userProjectId], references: [id], onDelete: Cascade)
+
+  @@index([donorId])
+  @@index([userProjectId])
+  @@index([paymentStatus])
+}
+
+// -----------------------------
+// BANK ACCOUNT MODEL
+// -----------------------------
+model BankAccount {
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  accountHolderName String
+  accountNumber     String
+  bankName          String
+  status            BankAccountStatus @default(PENDING_VERIFICATION)
+  isDefault         Boolean           @default(false)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  userId            String?           @db.ObjectId
+  user              User?             @relation(fields: [userId], references: [id])
+
+  userProjects      UserProject[]
+}
+
+// -----------------------------
+// WITHDRAWAL MODEL
+// -----------------------------
+model Withdrawal {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  amount        Float
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userProjectId String   @db.ObjectId
+  userProject   UserProject @relation(fields: [userProjectId], references: [id])
+}
