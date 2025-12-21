@@ -45,9 +45,9 @@ export default function DonationHistoryModal({ onClose }: Props) {
           <p className="text-center text-lg">No donations yet.</p>
         ) : (
           <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-            {donations.map((d) => (
+            {donations.map((d, index) => (
               <div
-                key={d._id}
+                key={d.id || index}
                 className="border-3 border-dreamxec-navy rounded-xl p-4 bg-dreamxec-cream"
               >
                 <div className="flex justify-between items-center">
