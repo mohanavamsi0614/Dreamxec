@@ -83,50 +83,50 @@ export const resetPassword = async (token: string, password: string): Promise<Ap
 
 // Google OAuth - Initiate authentication
 export const initiateGoogleAuth = (role: 'USER' | 'DONOR' | 'ADMIN'): void => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  const baseUrl = apiUrl.replace('/api', '');
-  
-  // Redirect to backend Google OAuth endpoint with role
-  const authUrl = `${baseUrl}/api/auth/google?role=${role}`;
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const authUrl = `${API_URL}/api/auth/google?role=${role}`;
   console.log('🔗 Redirecting to Google OAuth:', authUrl);
+
   window.location.href = authUrl;
 };
+
 
 // Google OAuth - Handle callback (called after redirect from Google)
 export const handleGoogleCallback = async (): Promise<ApiResponse<AuthResponse>> => {
   // Get token from URL params (backend should redirect with token)
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
-  
+
   if (token) {
     setToken(token);
   }
-  
+
   // Fetch user data
   return getCurrentUser();
 };
 
 // LinkedIn OAuth - Initiate authentication
 export const initiateLinkedInAuth = (role: 'USER' | 'DONOR' | 'ADMIN'): void => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  const baseUrl = apiUrl.replace('/api', '');
-  
-  // Redirect to backend LinkedIn OAuth endpoint with role
-  const authUrl = `${baseUrl}/api/auth/linkedin?role=${role}`;
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const authUrl = `${API_URL}/api/auth/linkedin?role=${role}`;
   console.log('🔗 Redirecting to LinkedIn OAuth:', authUrl);
+
   window.location.href = authUrl;
 };
+
 
 // LinkedIn OAuth - Handle callback (called after redirect from LinkedIn)
 export const handleLinkedInCallback = async (): Promise<ApiResponse<AuthResponse>> => {
   // Get token from URL params (backend should redirect with token)
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get('token');
-  
+
   if (token) {
     setToken(token);
   }
-  
+
   // Fetch user data
   return getCurrentUser();
 };
