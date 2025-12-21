@@ -26,7 +26,7 @@ import AddMemberManually from "./components/president/AddMemberManually";
 import PresidentLayout from "./components/president/PresidentLayout";
 import AdminClubReferrals from './components/admin/AdminClubReferrals';
 import AdminClubVerifications from './components/admin/AdminClubVerifications';
-
+import AuthCallback from './components/AuthCallback';
 
 
 
@@ -949,17 +949,7 @@ function AppContent() {
                               />
 
                               {/* OAuth callback handler */}
-                              <Route
-                                path="/auth/callback"
-                                element={
-                                  <div className="min-h-screen flex items-center justify-center bg-dreamxec-cream">
-                                    <div className="text-center">
-                                      <div className="w-16 h-16 border-4 border-dreamxec-orange border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                                      <p className="text-dreamxec-navy text-xl font-bold">Completing authentication...</p>
-                                    </div>
-                                  </div>
-                                }
-                              />
+                             <Route path="/auth/callback" element={<AuthCallback />} />
 
                               {/* Check Email Page */}
                               <Route
