@@ -37,6 +37,8 @@ import { getPublicDonorProjects, createDonorProject, getMyDonorProjects } from '
 import { getAllProjects, verifyUserProject, verifyDonorProject } from './services/adminService';
 import { applyToProject, getMyApplications } from './services/applicationService';
 import { mapBackendRole, mapFrontendRole, mapUserProjectToCampaign, mapDonorProjectToProject } from './services/mappers';
+import AboutUs from './components/AboutUs';
+
 
 // Main App Content Component
 function AppContent() {
@@ -949,7 +951,7 @@ function AppContent() {
                               />
 
                               {/* OAuth callback handler */}
-                             <Route path="/auth/callback" element={<AuthCallback />} />
+                              <Route path="/auth/callback" element={<AuthCallback />} />
 
                               {/* Check Email Page */}
                               <Route
@@ -1021,7 +1023,7 @@ function AppContent() {
                                         onCreateProject={() => navigate('/donor/create')}
                                         onViewProjects={() => navigate('/donor/projects')}
                                         getDonorApplications={async () => []}
-                                        updateApplicationStatus={async () => {}}
+                                        updateApplicationStatus={async () => { }}
                                         getDonationSummary={async () => ({})}
                                       />
                                     </>
@@ -1097,6 +1099,7 @@ function AppContent() {
                                 }
                               />
 
+
                               {/* Browse Projects - For Students */}
                               <Route
                                 path="/projects"
@@ -1116,6 +1119,22 @@ function AppContent() {
                                   </>
                                 }
                               />
+
+                              {/* About Us */}
+                              <Route
+                                path="/about"
+                                element={
+                                  <>
+                                    <Header
+                                      currentUser={user}
+                                      onLogin={handleLoginClick}
+                                      onLogout={handleLogout}
+                                    />
+                                    <AboutUs />
+                                  </>
+                                }
+                              />
+
                             </Routes>
                             {/* President Dashboard */}
                             <Routes>

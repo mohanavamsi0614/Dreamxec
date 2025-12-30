@@ -29,10 +29,10 @@ export const DesktopMenu = ({ currentUser, onLogin }: DesktopMenuProps) => {
         OPPORTUNITIES
       </a>
       <a
-        href="/projects"
+        href="/about"
         className="text-dreamxec-berkeley-blue font-bold text-lg hover:text-dreamxec-orange transition-colors font-display"
       >
-        ABOUT DREAMXEC
+        ABOUT US
       </a>
 
       {/* Role-specific links */}
