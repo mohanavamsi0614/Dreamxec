@@ -38,6 +38,7 @@ import { getAllProjects, verifyUserProject, verifyDonorProject } from './service
 import { applyToProject, getMyApplications } from './services/applicationService';
 import { mapBackendRole, mapFrontendRole, mapUserProjectToCampaign, mapDonorProjectToProject } from './services/mappers';
 import AboutUs from './components/AboutUs';
+import VerifyPresident from './components/VerifyPresident';
 
 
 // Main App Content Component
@@ -1113,6 +1114,7 @@ function AppContent() {
                                     <BrowseProjects
                                       projects={approvedProjects}
                                       currentUserId={user?.id}
+                                      role={user?.role}
                                       onApply={handleApplyToProject}
                                       userApplications={userApplications}
                                     />
@@ -1134,10 +1136,19 @@ function AppContent() {
                                   </>
                                 }
                               />
+                              {/* verify-president */}
+                              <Route path="/verify-president" element={
+                                <>
+                                  <Header
+                                    currentUser={user}
+                                    onLogin={handleLoginClick}
+                                    onLogout={handleLogout}
+                                  />
+                                  <VerifyPresident />
+                                </>
+                              } />
 
-                            </Routes>
-                            {/* President Dashboard */}
-                            <Routes>
+                              {/* President Dashboard */}
                               <Route path="/president" element={<PresidentLayout><PresidentDashboard /></PresidentLayout>} />
                               <Route path="/president/members" element={<PresidentLayout><PresidentMembers /></PresidentLayout>} />
                               <Route path="/president/campaigns" element={<PresidentLayout><PresidentCampaigns /></PresidentLayout>} />
