@@ -288,14 +288,18 @@ function AppContent() {
   }
 
   const handleCreateCampaign = async (data: {
+    id: string;
     title: string;
     description: string;
     clubName: string;
     goalAmount: number;
     imageUrl: string;
+    campaignMedia: string[];
+    presentationDeckUrl: string | null;
   }) => {
     try {
       const response = await createUserProject({
+        id: data.id,
         title: data.title,
         description: data.description,
         companyName: data.clubName,
@@ -303,6 +307,8 @@ function AppContent() {
         timeline: '3 months',
         goalAmount: data.goalAmount,
         imageUrl: data.imageUrl,
+        campaignMedia: data.campaignMedia,
+        presentationDeckUrl: data.presentationDeckUrl,
       });
 
       console.log('📦 Backend response:', response);

@@ -9,6 +9,8 @@ exports.createUserProjectSchema = z.object({
     timeline: z.string().optional(),
     goalAmount: z.number().positive('Goal amount must be positive'),
     imageUrl: z.string().url('Invalid URL').optional().or(z.literal('')),
+    campaignMedia: z.array(z.string().url()).optional(),
+    presentationDeckUrl: z.string().url().optional().or(z.literal('')),
   }),
 });
 
@@ -21,5 +23,7 @@ exports.updateUserProjectSchema = z.object({
     timeline: z.string().optional(),
     goalAmount: z.number().positive('Goal amount must be positive').optional(),
     imageUrl: z.string().url('Invalid URL').optional().or(z.literal('')),
+    campaignMedia: z.array(z.string().url()).optional(),
+    presentationDeckUrl: z.string().url().optional().or(z.literal('')),
   }),
 });

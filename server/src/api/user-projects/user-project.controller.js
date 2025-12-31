@@ -41,10 +41,11 @@ exports.createUserProject = catchAsync(async (req, res, next) => {
   }
 
   // 5️⃣ Normal project creation
-  const { title, description, companyName, skillsRequired, timeline, goalAmount, imageUrl } = req.body;
+  const { id, title, description, companyName, skillsRequired, timeline, goalAmount, imageUrl } = req.body;
 
   const userProject = await prisma.userProject.create({
     data: {
+      id: id || undefined, // Use provided ID if available (for strict folder matching)
       title,
       description,
       companyName: companyName || null,
@@ -52,6 +53,8 @@ exports.createUserProject = catchAsync(async (req, res, next) => {
       timeline: timeline || null,
       goalAmount,
       imageUrl: imageUrl || null,
+      campaignMedia: req.body.campaignMedia || [],
+      presentationDeckUrl: req.body.presentationDeckUrl || null,
       userId: req.user.id,
     },
   });

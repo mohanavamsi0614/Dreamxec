@@ -291,6 +291,72 @@ export default function CampaignDetails({ currentUser, campaigns, onLogin, onLog
               </p>
             </div>
 
+            {/* Media Gallery */}
+            {campaign.campaignMedia && campaign.campaignMedia.length > 0 && (
+              <div className="card-pastel-offwhite rounded-xl border-5 border-dreamxec-navy shadow-pastel-card p-6">
+                <div className="card-tricolor-tag"></div>
+                <h2 className="text-2xl font-bold text-dreamxec-navy mb-4 font-display mt-4">
+                  Gallery
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {campaign.campaignMedia.map((mediaUrl, index) => (
+                    <div key={index} className="rounded-lg border-3 border-dreamxec-navy overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      {mediaUrl.match(/\.(mp4|webm|ogg)$/i) ? (
+                        <video controls className="w-full h-48 object-cover">
+                          <source src={mediaUrl} />
+                          Your browser does not support the video tag.
+                        </video>
+                      ) : (
+                        <img
+                          src={mediaUrl}
+                          alt={`Campaign Media ${index + 1}`}
+                          className="w-full h-48 object-cover hover:scale-105 transition-transform"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Pitch Deck (Admin/Owner Only) */}
+            {campaign.presentationDeckUrl && (currentUser?.role === 'admin' || currentUser?.id === campaign.userId) && (
+              <div className="card-pastel-offwhite rounded-xl border-5 border-dreamxec-navy shadow-pastel-card p-6">
+                <div className="card-tricolor-tag"></div>
+                <h2 className="text-2xl font-bold text-dreamxec-navy mb-4 font-display mt-4 flex items-center gap-2">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Pitch Deck
+                </h2>
+                <div className="flex items-center justify-between p-4 bg-dreamxec-cream rounded-lg border-3 border-dreamxec-navy">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                    </svg>
+                    <div>
+                      <p className="font-bold text-dreamxec-navy font-display">Campaign Pitch Deck</p>
+                      <p className="text-xs text-dreamxec-navy opacity-70 font-sans">PDF/PPT Presentation</p>
+                    </div>
+                  </div>
+                  <a
+                    href={campaign.presentationDeckUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-dreamxec-navy text-white rounded-lg font-bold font-display hover:bg-dreamxec-orange transition-colors flex items-center gap-2"
+                  >
+                    View / Download
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+                <p className="text-xs text-dreamxec-navy opacity-60 mt-2 font-sans italic">
+                  * Visible only to Administrators and Campaign Owner
+                </p>
+              </div>
+            )}
+
             {/* Timeline */}
             <div className="card-pastel-offwhite rounded-xl border-5 border-dreamxec-navy shadow-pastel-card p-6">
               <div className="card-tricolor-tag"></div>

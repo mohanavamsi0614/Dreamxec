@@ -136,6 +136,8 @@ model UserProject {
   goalAmount      Float
   amountRaised    Float         @default(0)
   imageUrl        String?
+  campaignMedia   String[]  @default([])
+  presentationDeckUrl String?
   status          ProjectStatus @default(PENDING)
   rejectionReason String? // Admin's reason for rejection
   createdAt       DateTime      @default(now())

@@ -29,6 +29,7 @@ const adminClubReferralRoutes = require('./src/api/admin-club/adminClubReferral.
 const adminClubVerificationRoutes = require('./src/api/admin-club/adminClubVerification.routes');
 const newsletterRoutes = require('./src/api/newsletter/newsletter.routes');
 const wishlistRoutes = require('./src/api/wishlist/wishlist.routes');
+const uploadRoutes = require('./src/api/upload/upload.routes');
 
 // Load Passport (Google only, LinkedIn handled via OIDC file)
 require('./src/config/passport');
@@ -136,6 +137,7 @@ app.use("/api/admin/referrals", adminClubReferralRoutes);
 app.use("/api/admin/club-verifications", adminClubVerificationRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // --------------------------------------------
 // HANDLE 404

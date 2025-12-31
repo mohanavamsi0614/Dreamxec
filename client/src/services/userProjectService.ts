@@ -10,6 +10,8 @@ export interface UserProject {
   goalAmount: number;
   amountRaised: number;
   imageUrl?: string;
+  campaignMedia?: string[];
+  presentationDeckUrl?: string | null;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   userId: string;
   bankAccountId?: string | null;
@@ -19,6 +21,7 @@ export interface UserProject {
 }
 
 export interface CreateUserProjectData {
+  id?: string;
   title: string;
   description: string;
   companyName: string;
@@ -26,6 +29,8 @@ export interface CreateUserProjectData {
   timeline: string;
   goalAmount: number;
   imageUrl?: string;
+  campaignMedia?: string[];
+  presentationDeckUrl?: string | null;
 }
 
 export interface UpdateUserProjectData {
@@ -36,6 +41,8 @@ export interface UpdateUserProjectData {
   timeline?: string;
   goalAmount?: number;
   imageUrl?: string;
+  campaignMedia?: string[];
+  presentationDeckUrl?: string | null;
 }
 
 // Get all public user projects (campaigns)
