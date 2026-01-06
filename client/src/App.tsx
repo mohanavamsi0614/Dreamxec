@@ -37,6 +37,9 @@ import { getPublicDonorProjects, createDonorProject, getMyDonorProjects } from '
 import { getAllProjects, verifyUserProject, verifyDonorProject } from './services/adminService';
 import { applyToProject, getMyApplications } from './services/applicationService';
 import { mapBackendRole, mapFrontendRole, mapUserProjectToCampaign, mapDonorProjectToProject } from './services/mappers';
+import AboutUs from './components/AboutUs';
+import VerifyPresident from './components/VerifyPresident';
+
 
 // Main App Content Component
 function AppContent() {
@@ -285,14 +288,18 @@ function AppContent() {
   }
 
   const handleCreateCampaign = async (data: {
+    id: string;
     title: string;
     description: string;
     clubName: string;
     goalAmount: number;
     imageUrl: string;
+    campaignMedia: string[];
+    presentationDeckUrl: string | null;
   }) => {
     try {
       const response = await createUserProject({
+        id: data.id,
         title: data.title,
         description: data.description,
         companyName: data.clubName,
@@ -300,6 +307,8 @@ function AppContent() {
         timeline: '3 months',
         goalAmount: data.goalAmount,
         imageUrl: data.imageUrl,
+        campaignMedia: data.campaignMedia,
+        presentationDeckUrl: data.presentationDeckUrl,
       });
 
       console.log('📦 Backend response:', response);
@@ -949,7 +958,7 @@ function AppContent() {
                               />
 
                               {/* OAuth callback handler */}
-                             <Route path="/auth/callback" element={<AuthCallback />} />
+                              <Route path="/auth/callback" element={<AuthCallback />} />
 
                               {/* Check Email Page */}
                               <Route
@@ -1021,7 +1030,7 @@ function AppContent() {
                                         onCreateProject={() => navigate('/donor/create')}
                                         onViewProjects={() => navigate('/donor/projects')}
                                         getDonorApplications={async () => []}
-                                        updateApplicationStatus={async () => {}}
+                                        updateApplicationStatus={async () => { }}
                                         getDonationSummary={async () => ({})}
                                       />
                                     </>
@@ -1097,10 +1106,12 @@ function AppContent() {
                                 }
                               />
 
+
                               {/* Browse Projects - For Students */}
                               <Route
                                 path="/projects"
                                 element={
+                                  user?.role === 'student' ? (
                                   <>
                                     <Header
                                       currentUser={user}
@@ -1110,15 +1121,58 @@ function AppContent() {
                                     <BrowseProjects
                                       projects={approvedProjects}
                                       currentUserId={user?.id}
+                                      role={user?.role}
                                       onApply={handleApplyToProject}
                                       userApplications={userApplications}
                                     />
                                   </>
+                                  ) : (
+                                    <>
+                                    <Header
+                                    currentUser={user}
+                                      onLogin={handleLoginClick}
+                                      onLogout={handleLogout}
+                                    />
+                                    <div className="min-h-screen flex items-center justify-center bg-dreamxec-cream">
+                                      <div className="card-pastel-offwhite rounded-xl border-5 border-dreamxec-navy shadow-pastel-card p-12 text-center max-w-md">
+                                        <div className="card-tricolor-tag"></div>
+                                        <p className="text-dreamxec-navy text-xl font-sans mt-4">
+                                          Please log in as a student to browse projects.
+                                        </p>
+                                      </div>
+                                    </div>
+                                    </>
+                                  )
                                 }
                               />
-                            </Routes>
-                            {/* President Dashboard */}
-                            <Routes>
+
+                              {/* About Us */}
+                              <Route
+                                path="/about"
+                                element={
+                                  <>
+                                    <Header
+                                      currentUser={user}
+                                      onLogin={handleLoginClick}
+                                      onLogout={handleLogout}
+                                    />
+                                    <AboutUs />
+                                  </>
+                                }
+                              />
+                              {/* verify-president */}
+                              <Route path="/verify-president" element={
+                                <>
+                                  <Header
+                                    currentUser={user}
+                                    onLogin={handleLoginClick}
+                                    onLogout={handleLogout}
+                                  />
+                                  <VerifyPresident />
+                                </>
+                              } />
+
+                              {/* President Dashboard */}
                               <Route path="/president" element={<PresidentLayout><PresidentDashboard /></PresidentLayout>} />
                               <Route path="/president/members" element={<PresidentLayout><PresidentMembers /></PresidentLayout>} />
                               <Route path="/president/campaigns" element={<PresidentLayout><PresidentCampaigns /></PresidentLayout>} />
